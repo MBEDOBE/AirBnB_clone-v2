@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """
+<<<<<<< HEAD
 Fabric script generates .tgz archive of all in web_static/ using func 'do_pack'
 Usage: fab -f 1-pack_web_static.py do_pack
 All files in the folder web_static must be added to the final archive
@@ -25,3 +26,27 @@ def do_pack():
 
 
 
+=======
+    Script generates a .tgz archive from web_static folder
+"""
+
+
+def do_pack():
+    """
+    function creates a .tgz
+    """
+    from fabric.operations import local
+    from datetime import datetime
+
+    name = "./versions/web_static_{}.tgz"
+    name = name.format(datetime.now().strftime("%Y%m%d%H%M%S"))
+    local("mkdir -p versions")
+    create = local("tar -cvzf {} web_static".format(name))
+    if create.succeeded:
+        return name
+    else:
+        return None
+
+if __name__ == "__main__":
+    do_pack()
+>>>>>>> 1aced92aa093f0aa05e999d8e476b453e47af141
