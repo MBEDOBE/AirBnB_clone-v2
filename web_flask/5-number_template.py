@@ -1,20 +1,6 @@
 #!/usr/bin/python3
 """Starts a Flask web application.
 
-The application listens on 0.0.0.0, port 5000.
-
-Routes:
-    /: Displays 'Hello HBNB!'
-    /hbnb: Displays 'HBNB'
-    /c/<text>: Displays 'C ' followed by the value of the text variable
-        (replace underscore _ symbols with a space)
-    /python/(<text>): Displays 'Python ' followed by the value of the text variable
-        (replace underscore _ symbols with a space)
-        The default value of text is 'is cool'
-    /number/<n>: Displays 'n is a number' only if n is an integer
-    /number_template/<n>: Displays an HTML page only if n is an integer:
-        H1 tag: 'Number: n' inside the tag BODY
-
 """
 
 from flask import Flask, render_template
@@ -42,7 +28,7 @@ def c_text(text):
 
 @app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def python_text(text):
+def python_text(text='is cool'):
     """Displays 'Python ' followed by the value of the text variable."""
     return 'Python {}'.format(text.replace('_', ' '))
 
