@@ -4,24 +4,27 @@ Starts a Flask web application
 """
 
 from models import storage
+from models.state import State
+from models.amenity import Amenity
 from flask import Flask, render_template
 
 
 app = Flask(__name__)
 
 
+@app.route('/hbnb_filters', strict_slashes=False)
+def index_html_6():
+    """Displays a html page like 6-index.html."""
+    states_list = storage.all(State)
+    amenities_list = storage.all(Amenity)
+    return render_template(
+            '10-hbnb_filters.html', states=states_list, amenities=amenities_list)
+
+
 @app.teardown_appcontext
-def teardown_storage(exception):
+def close_session(exception=None):
     """Remove the current SQLAlchemy Session"""
     storage.close()
-
-
-@app.route('/hbnb_filters', strict_slashes=False)
-def display_hbnb_filters():
-    """Displays a HTML page like 6-index.html with updated files and data"""
-    states = sorted(storage.all('State').values(), key=lambda s: s.name)
-    amenities = sorted(storage.all('Amenity').values(), key=lambda a: a.name)
-    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
 
 
 if __name__ == '__main__':
