@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
-Flask web application that displays States and Cities
+ALX SE Flask Module to render the web application
+using the url /states
 """
-
 from models import storage
 from models.state import State
 from flask import Flask, render_template
