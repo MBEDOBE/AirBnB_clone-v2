@@ -3,36 +3,36 @@
 Flask web application that displays States and Cities
 """
 
-from flask import Flask, render_template
 from models import storage
 from models.state import State
-from models.city import City
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
 
 @app.route('/states', strict_slashes=False)
-def display_states():
-    """Displays a list of all State objects"""
-    states = storage.all(State)
-    return render_template('9-states.html', states=states)
+def states_list():
+    """Render list of all states."""
+    states_list = storage.all(State)
+    return render_template(
+            '9-states.html', states=states_list, pass_with_id=False)
 
 
 @app.route('/states/<id>', strict_slashes=False)
-def display_state(id):
-    """Displays a State object and its Cities"""
-    state = storage.get(State, id)
-    if state is None:
-        return render_template('9-not_found.html')
-    cities = sorted(state.cities, key=lambda c: c.name)
-    return render_template('9-state.html', state=state, cities=cities)
+def states_by_id(id):
+    """Render list of all states."""
+    key = 'State.{}'.format(id)
+    states_list = storage.all(State)
+    state = states_list.get(key)
+    return render_template('9-states.html', state=state, pass_with_id=True)
 
 
 @app.teardown_appcontext
-def close_session(response_or_exc):
-    """Removes the current SQLAlchemy Session"""
+def close_session(exception=None):
+    """Close the current session."""
     storage.close()
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0')
